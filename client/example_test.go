@@ -37,8 +37,8 @@ func ExampleWHOCasesData() {
 	//Date_reported,Country_code,Country,WHO_region,New_cases,Cumulative_cases,New_deaths,Cumulative_deaths
 }
 
-func ExampleTokyoPositivesData() {
-	resp, err := client.Default().TokyoPositivesData()
+func ExampleTokyoPatientsData() {
+	resp, err := client.Default().TokyoPatientsData()
 	if err != nil {
 		fmt.Println(err)
 		return

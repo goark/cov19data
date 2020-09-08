@@ -1,12 +1,8 @@
 package entity
 
 import (
-	"bytes"
-	"encoding/csv"
 	"encoding/json"
-	"io"
 
-	"github.com/spiegel-im-spiegel/cov19data/ecode"
 	"github.com/spiegel-im-spiegel/cov19data/values"
 	"github.com/spiegel-im-spiegel/errs"
 )
@@ -36,85 +32,11 @@ func newWHOGlobalData(date, countryCode, regionCode, newCases, cumulativeCases, 
 		NewDeaths:        json.Number(newDeaths),
 		CumulativeDeaths: json.Number(cumulativeDeaths),
 	}, nil
-
 }
 
-func ExportWHOJSON(data []WHOGlobalData) ([]byte, error) {
-	if len(data) == 0 {
-		return nil, errs.Wrap(ecode.ErrNoData)
-	}
-	return json.Marshal(data)
-}
-
-func ExportWHOCSV(data []WHOGlobalData) ([]byte, error) {
-	if len(data) == 0 {
-		return nil, errs.Wrap(ecode.ErrNoData)
-	}
-	buf := &bytes.Buffer{}
-	cw := csv.NewWriter(buf)
-	cw.Comma = ','
-	if err := cw.Write([]string{
-		"Date_reported",
-		"Country_code",
-		"Country",
-		"WHO_region",
-		"New_cases",
-		"Cumulative_cases",
-		"New_deaths",
-		"Cumulative_deaths",
-	}); err != nil {
-		return nil, errs.Wrap(err)
-	}
-	for _, d := range data {
-		if err := cw.Write([]string{
-			d.Date.String(),
-			d.CountryCode.String(),
-			d.CountryCode.Name(),
-			d.WHORegion.String(),
-			string(d.NewCases),
-			string(d.CumulativeCases),
-			string(d.NewDeaths),
-			string(d.CumulativeDeaths),
-		}); err != nil {
-			return nil, errs.Wrap(err)
-		}
-	}
-	cw.Flush()
-	return buf.Bytes(), nil
-}
-
-func ImportWHOCSV(r io.Reader, opts ...FiltersOptFunc) ([]WHOGlobalData, error) {
-	filter := NewFilters(opts...)
-	records := []WHOGlobalData{}
-	cr := csv.NewReader(r)
-	cr.Comma = ','
-	cr.LazyQuotes = true       // a quote may appear in an unquoted field and a non-doubled quote may appear in a quoted field.
-	cr.TrimLeadingSpace = true // leading
-	header := true
-	for {
-		elms, err := cr.Read()
-		if err != nil {
-			if errs.Is(err, io.EOF) {
-				break
-			}
-			return nil, errs.Wrap(err)
-		}
-		if len(elms) < 8 {
-			return nil, errs.Wrap(ecode.ErrInvalidRecord, errs.WithContext("record", elms))
-		}
-		if !header {
-			record, err := newWHOGlobalData(elms[0], elms[1], elms[3], elms[4], elms[5], elms[6], elms[7])
-			if err != nil {
-				return nil, errs.Wrap(err)
-			}
-			if filter.Period(record.Date) && filter.CountryCode(record.CountryCode) && filter.RegionCode(record.WHORegion) {
-				records = append(records, record)
-			}
-		} else {
-			header = false
-		}
-	}
-	return records, nil
+//CheckFilter method returns true if cheking filter is OK.
+func (d WHOGlobalData) CheckFilter(filter *Filters) bool {
+	return filter.Period(d.Date) && filter.CountryCode(d.CountryCode) && filter.RegionCode(d.WHORegion)
 }
 
 /* Copyright 2020 Spiegel

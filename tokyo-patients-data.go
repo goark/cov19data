@@ -9,23 +9,23 @@ import (
 )
 
 //ImportWHOCSV function returns WHO COVID-19 global data from WHO site.
-func ImportWHOCSV(c *client.Client, opts ...entity.FiltersOptFunc) ([]entity.WHOGlobalData, error) {
-	r, err := c.WHOCasesData()
+func ImportTokyoCSV(c *client.Client, opts ...entity.FiltersOptFunc) ([]entity.TokyoData, error) {
+	r, err := c.TokyoPatientsData()
 	if err != nil {
 		return nil, errs.Wrap(err)
 	}
 	defer r.Close()
-	return entity.ImportWHOCSV(r, opts...)
+	return entity.ImportTokyoCSV(r, opts...)
 }
 
-//MakeHistogramWHO function returns WHO COVID-19 global data from WHO site.
-func MakeHistogramWHO(c *client.Client, period values.Period, span int, opts ...entity.FiltersOptFunc) ([]*histogram.HistData, error) {
-	r, err := c.WHOCasesData()
+//MakeHistogramTokyo function returns Tokyo patients data from Web site.
+func MakeHistogramTokyo(c *client.Client, period values.Period, span int, opts ...entity.FiltersOptFunc) ([]*histogram.HistData, error) {
+	r, err := c.TokyoPatientsData()
 	if err != nil {
 		return nil, errs.Wrap(err)
 	}
 	defer r.Close()
-	return histogram.MakeHistgramWHOFromCSV(r, period, span, opts...)
+	return histogram.MakeHistgramTokyoFromCSV(r, period, span, opts...)
 }
 
 /* Copyright 2020 Spiegel

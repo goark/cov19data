@@ -1,8 +1,9 @@
-package cov19data
+package histogram
 
 import (
 	"bytes"
 	"encoding/csv"
+	"sort"
 	"strconv"
 
 	"github.com/spiegel-im-spiegel/cov19data/ecode"
@@ -48,6 +49,33 @@ func (h *HistData) AddDeaths(deaths int64) *HistData {
 	return h
 }
 
+//NewHistList creates list of HistData.
+func NewHistList(p values.Period, span int) []*HistData {
+	histList := []*HistData{}
+	if p.IsZero() {
+		return histList
+	}
+	if span < 1 {
+		return histList
+	}
+	start := p.Start
+	next := p.End
+	for {
+		to := next
+		next = to.AddDay(-span)
+		from := next.AddDay(1)
+		histList = append(histList, NewHistData(values.NewPeriod(from, to), 0, 0))
+		if values.NewPeriod(from, to).Contains(start) {
+			break
+		}
+	}
+	sort.Slice(histList, func(i, j int) bool {
+		return histList[i].Period.End.Before(histList[j].Period.End)
+	})
+	return histList
+}
+
+//ExportHistCSV exports CSV string from list of HistData.
 func ExportHistCSV(data []*HistData) ([]byte, error) {
 	if len(data) == 0 {
 		return nil, errs.Wrap(ecode.ErrNoData)
