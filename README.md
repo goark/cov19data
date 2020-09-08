@@ -9,7 +9,7 @@
 ### Import This Package
 
 ```go
-import "github.com/spiegel-im-spiegel/cov19data/client"
+import "github.com/spiegel-im-spiegel/cov19data"
 ```
 
 ### Get COVID-2019 Global Data (raw data) from WHO Web Site
