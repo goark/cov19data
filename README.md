@@ -148,4 +148,4 @@ func main() {
 }
 ```
 
-[cov19data]: https://github.com/spiegel-im-spiegel/cov19data
+[cov19data]: https://github.com/spiegel-im-spiegel/cov19data "spiegel-im-spiegel/cov19data: Importing WHO COVID-2019 Cases Global Data"
