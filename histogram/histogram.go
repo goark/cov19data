@@ -50,19 +50,19 @@ func (h *HistData) AddDeaths(deaths int64) *HistData {
 }
 
 //NewHistList creates list of HistData.
-func NewHistList(p values.Period, span int) []*HistData {
+func NewHistList(p values.Period, step int) []*HistData {
 	histList := []*HistData{}
 	if p.IsZero() {
 		return histList
 	}
-	if span < 1 {
+	if step < 1 {
 		return histList
 	}
 	start := p.Start
 	next := p.End
 	for {
 		to := next
-		next = to.AddDay(-span)
+		next = to.AddDay(-step)
 		from := next.AddDay(1)
 		histList = append(histList, NewHistData(values.NewPeriod(from, to), 0, 0))
 		if values.NewPeriod(from, to).Contains(start) {

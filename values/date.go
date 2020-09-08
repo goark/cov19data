@@ -14,17 +14,17 @@ type Date struct {
 	time.Time
 }
 
-//NewDate returns Date instance from year/month/day.
-func NewDate(year int, month time.Month, day int) Date {
-	return NewDateTime(time.Date(year, month, day, 0, 0, 0, 0, time.UTC))
-}
-
 var (
 	defaultDateForm = "2006-01-02"
 )
 var timeTemplate = []string{
 	defaultDateForm,
 	time.RFC3339,
+}
+
+//NewDate returns Date instance from year/month/day.
+func NewDate(year int, month time.Month, day int) Date {
+	return NewDateTime(time.Date(year, month, day, 0, 0, 0, 0, time.UTC))
 }
 
 //NewDateString returns Date instance from formatted date string.
@@ -50,6 +50,16 @@ func NewDateTime(tm time.Time) Date {
 	}
 	_, offset := tm.Zone()
 	return Date{time.Unix(((tm.Unix()+int64(offset))/86400)*86400, 0).In(time.UTC)}
+}
+
+//Today function retuens Date instance of today
+func Today() Date {
+	return NewDateTime(time.Now())
+}
+
+//Yesterday function retuens Date instance of yesterday
+func Yesterday() Date {
+	return Today().AddDay(-1)
 }
 
 //UnmarshalJSON returns result of Unmarshal for json.Unmarshal().
