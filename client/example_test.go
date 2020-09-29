@@ -14,7 +14,7 @@ func trimBOM(s string) string {
 	return strings.Trim(s, string(bom))
 }
 
-func ExampleWHOCasesData() {
+func ExampleClient_WHOCasesData() {
 	resp, err := client.Default().WHOCasesData()
 	if err != nil {
 		fmt.Println(err)
@@ -37,7 +37,7 @@ func ExampleWHOCasesData() {
 	//Date_reported,Country_code,Country,WHO_region,New_cases,Cumulative_cases,New_deaths,Cumulative_deaths
 }
 
-func ExampleTokyoPatientsData() {
+func ExampleClient_TokyoPatientsData() {
 	resp, err := client.Default().TokyoPatientsData()
 	if err != nil {
 		fmt.Println(err)
