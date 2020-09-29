@@ -1,6 +1,7 @@
 package entity
 
 import (
+	"github.com/spiegel-im-spiegel/cov19data/filter"
 	"github.com/spiegel-im-spiegel/cov19data/values"
 	"github.com/spiegel-im-spiegel/errs"
 )
@@ -15,12 +16,12 @@ type TokyoData struct {
 	LeaveFlag    string      //退院フラグ（1:退院または死亡）
 }
 
-func newTokyoData(date, localGovCode, address, age, gender, leaveFlag string) (TokyoData, error) {
+func New(date, localGovCode, address, age, gender, leaveFlag string) (*TokyoData, error) {
 	dt, err := values.NewDateString(date)
 	if err != nil {
-		return TokyoData{}, errs.Wrap(err, errs.WithContext("date", date))
+		return nil, errs.Wrap(err, errs.WithContext("date", date))
 	}
-	return TokyoData{
+	return &TokyoData{
 		Date:         dt,
 		LocalGovCode: localGovCode,
 		Address:      address,
@@ -31,7 +32,7 @@ func newTokyoData(date, localGovCode, address, age, gender, leaveFlag string) (T
 }
 
 //CheckFilter method returns true if cheking filter is OK.
-func (d TokyoData) CheckFilter(filter *Filters) bool {
+func (d *TokyoData) CheckFilter(filter *filter.Filters) bool {
 	return filter.Period(d.Date) && filter.CountryCode(values.CC_JP) && filter.RegionCode(values.WPRO)
 }
 

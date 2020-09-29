@@ -4,41 +4,13 @@ import (
 	"bytes"
 	"encoding/csv"
 	"encoding/json"
-	"io"
 
 	"github.com/spiegel-im-spiegel/cov19data/ecode"
 	"github.com/spiegel-im-spiegel/errs"
 )
 
-//ImportTokyoCSV function creates list of TokyoData from CSV.
-func ImportTokyoCSV(r io.Reader, opts ...FiltersOptFunc) ([]TokyoData, error) {
-	filter := NewFilters(opts...)
-	records := []TokyoData{}
-	cr := NewCsvReaderTokyo(r)
-	for {
-		record, err := cr.Next()
-		if err != nil {
-			if errs.Is(err, ecode.ErrNoData) {
-				break
-			}
-			return nil, errs.Wrap(err)
-		}
-		if record.CheckFilter(filter) {
-			records = append(records, record)
-		}
-	}
-	return records, nil
-}
-
-func ExportTokyoJSON(data []TokyoData) ([]byte, error) {
-	if len(data) == 0 {
-		return nil, errs.Wrap(ecode.ErrNoData)
-	}
-	return json.Marshal(data)
-}
-
-//ExportWHOCSV function returns CSV string from list of WHOGlobalData.
-func ExportTokyoCSV(data []TokyoData) ([]byte, error) {
+//ExportCSV function returns CSV string from list of WHOGlobalData.
+func ExportCSV(data []*TokyoData) ([]byte, error) {
 	if len(data) == 0 {
 		return nil, errs.Wrap(ecode.ErrNoData)
 	}
@@ -69,6 +41,14 @@ func ExportTokyoCSV(data []TokyoData) ([]byte, error) {
 	}
 	cw.Flush()
 	return buf.Bytes(), nil
+}
+
+//ExportJSON function returns JSON string from list of TokyoData.
+func ExportJSON(data []*TokyoData) ([]byte, error) {
+	if len(data) == 0 {
+		return nil, errs.Wrap(ecode.ErrNoData)
+	}
+	return json.Marshal(data)
 }
 
 /* Copyright 2020 Spiegel

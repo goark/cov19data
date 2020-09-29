@@ -3,6 +3,7 @@ package histogram
 import (
 	"bytes"
 	"encoding/csv"
+	"encoding/json"
 	"sort"
 	"strconv"
 
@@ -18,8 +19,8 @@ type HistData struct {
 	Deaths int64
 }
 
-//NewHistData function creates a new HistData instance.
-func NewHistData(period values.Period, cases, deaths int64) *HistData {
+//New function creates a new HistData instance.
+func New(period values.Period, cases, deaths int64) *HistData {
 	return &HistData{Period: period, Cases: cases, Deaths: deaths}
 }
 
@@ -49,34 +50,52 @@ func (h *HistData) AddDeaths(deaths int64) *HistData {
 	return h
 }
 
-//NewHistList creates list of HistData.
-func NewHistList(p values.Period, step int) []*HistData {
+//NewList creates list of HistData.
+func NewList(p values.Period, step int) ([]*HistData, values.Period) {
 	histList := []*HistData{}
+	max := values.Period{}
 	if p.IsZero() {
-		return histList
+		return histList, max
 	}
 	if step < 1 {
-		return histList
+		return histList, max
 	}
 	start := p.Start
-	next := p.End
+	end := p.End
+	next := end
 	for {
 		to := next
 		next = to.AddDay(-step)
 		from := next.AddDay(1)
-		histList = append(histList, NewHistData(values.NewPeriod(from, to), 0, 0))
-		if values.NewPeriod(from, to).Contains(start) {
+		start = from
+		histList = append(histList, New(values.NewPeriod(from, to), 0, 0))
+		if values.NewPeriod(from, to).Contains(p.Start) {
 			break
 		}
 	}
 	sort.Slice(histList, func(i, j int) bool {
 		return histList[i].Period.End.Before(histList[j].Period.End)
 	})
-	return histList
+	return histList, values.NewPeriod(start, end)
+}
+
+//AddData adds data into HistData list.
+func AddData(histList []*HistData, dt values.Date, cases, deaths json.Number) {
+	for _, h := range histList {
+		if h.Period.Contains(dt) {
+			if n, err := cases.Int64(); err == nil {
+				h.AddCases(n)
+			}
+			if n, err := deaths.Int64(); err == nil {
+				h.AddDeaths(n)
+			}
+			return
+		}
+	}
 }
 
 //ExportHistCSV exports CSV string from list of HistData.
-func ExportHistCSV(data []*HistData) ([]byte, error) {
+func ExportCSV(data []*HistData) ([]byte, error) {
 	if len(data) == 0 {
 		return nil, errs.Wrap(ecode.ErrNoData)
 	}
@@ -103,6 +122,14 @@ func ExportHistCSV(data []*HistData) ([]byte, error) {
 	}
 	cw.Flush()
 	return buf.Bytes(), nil
+}
+
+//ExportJSON function returns JSON string from list of HistData.
+func ExportJSON(data []*HistData) ([]byte, error) {
+	if len(data) == 0 {
+		return nil, errs.Wrap(ecode.ErrNoData)
+	}
+	return json.Marshal(data)
 }
 
 /* Copyright 2020 Spiegel

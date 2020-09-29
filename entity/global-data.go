@@ -3,12 +3,13 @@ package entity
 import (
 	"encoding/json"
 
+	"github.com/spiegel-im-spiegel/cov19data/filter"
 	"github.com/spiegel-im-spiegel/cov19data/values"
 	"github.com/spiegel-im-spiegel/errs"
 )
 
-//WHOGlobalData is entity class for WHO COVID-19 global data
-type WHOGlobalData struct {
+//GlobalData is entity class for WHO COVID-19 global data
+type GlobalData struct {
 	Date             values.Date
 	CountryCode      values.CountryCode
 	WHORegion        values.RegionCode
@@ -18,12 +19,13 @@ type WHOGlobalData struct {
 	CumulativeDeaths json.Number
 }
 
-func newWHOGlobalData(date, countryCode, regionCode, newCases, cumulativeCases, newDeaths, cumulativeDeaths string) (WHOGlobalData, error) {
+//New function returns new GlobalData instance.
+func New(date, countryCode, regionCode, newCases, cumulativeCases, newDeaths, cumulativeDeaths string) (*GlobalData, error) {
 	dt, err := values.NewDateString(date)
 	if err != nil {
-		return WHOGlobalData{}, errs.Wrap(err, errs.WithContext("date", date))
+		return nil, errs.Wrap(err, errs.WithContext("date", date))
 	}
-	return WHOGlobalData{
+	return &GlobalData{
 		Date:             dt,
 		CountryCode:      values.GetCountryCode(countryCode),
 		WHORegion:        values.GetRegionCode(regionCode),
@@ -35,8 +37,8 @@ func newWHOGlobalData(date, countryCode, regionCode, newCases, cumulativeCases, 
 }
 
 //CheckFilter method returns true if cheking filter is OK.
-func (d WHOGlobalData) CheckFilter(filter *Filters) bool {
-	return filter.Period(d.Date) && filter.CountryCode(d.CountryCode) && filter.RegionCode(d.WHORegion)
+func (d *GlobalData) CheckFilter(f *filter.Filters) bool {
+	return f.Period(d.Date) && f.CountryCode(d.CountryCode) && f.RegionCode(d.WHORegion)
 }
 
 /* Copyright 2020 Spiegel

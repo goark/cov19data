@@ -4,34 +4,13 @@ import (
 	"bytes"
 	"encoding/csv"
 	"encoding/json"
-	"io"
 
 	"github.com/spiegel-im-spiegel/cov19data/ecode"
 	"github.com/spiegel-im-spiegel/errs"
 )
 
-//ImportWHOCSV function creates list of WHOGlobalData from CSV.
-func ImportWHOCSV(r io.Reader, opts ...FiltersOptFunc) ([]WHOGlobalData, error) {
-	filter := NewFilters(opts...)
-	records := []WHOGlobalData{}
-	cr := NewCsvReaderWHO(r)
-	for {
-		record, err := cr.Next()
-		if err != nil {
-			if errs.Is(err, ecode.ErrNoData) {
-				break
-			}
-			return nil, errs.Wrap(err)
-		}
-		if record.CheckFilter(filter) {
-			records = append(records, record)
-		}
-	}
-	return records, nil
-}
-
-//ExportWHOCSV function returns CSV string from list of WHOGlobalData.
-func ExportWHOCSV(data []WHOGlobalData) ([]byte, error) {
+//ExportCSV function returns CSV string from list of WHOGlobalData.
+func ExportCSV(data []*GlobalData) ([]byte, error) {
 	if len(data) == 0 {
 		return nil, errs.Wrap(ecode.ErrNoData)
 	}
@@ -68,8 +47,8 @@ func ExportWHOCSV(data []WHOGlobalData) ([]byte, error) {
 	return buf.Bytes(), nil
 }
 
-//ExportWHOJSON function returns JSON string from list of WHOGlobalData.
-func ExportWHOJSON(data []WHOGlobalData) ([]byte, error) {
+//ExportJSON function returns JSON string from list of WHOGlobalData.
+func ExportJSON(data []*GlobalData) ([]byte, error) {
 	if len(data) == 0 {
 		return nil, errs.Wrap(ecode.ErrNoData)
 	}

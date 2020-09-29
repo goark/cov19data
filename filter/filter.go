@@ -1,4 +1,4 @@
-package entity
+package filter
 
 import "github.com/spiegel-im-spiegel/cov19data/values"
 
@@ -12,8 +12,8 @@ type Filters struct {
 //FiltersOptFunc type is self-referential function type for New functions. (functional options pattern)
 type FiltersOptFunc func(*Filters)
 
-//NewFilters function returns a  new Filters instance with options.
-func NewFilters(opts ...FiltersOptFunc) *Filters {
+//New function returns a  new Filters instance with options.
+func New(opts ...FiltersOptFunc) *Filters {
 	f := &Filters{
 		periods:      []values.Period{},
 		countryCodes: []values.CountryCode{},
@@ -25,9 +25,9 @@ func NewFilters(opts ...FiltersOptFunc) *Filters {
 	return f
 }
 
-//WithFilterPeriod function returns FiltersOptFunc function value.
+//WithPeriod function returns FiltersOptFunc function value.
 //This function is used in New functions that represents Marketplace data.
-func WithFilterPeriod(period values.Period) FiltersOptFunc {
+func WithPeriod(period values.Period) FiltersOptFunc {
 	return func(f *Filters) {
 		if f != nil {
 			existFlag := false

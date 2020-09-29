@@ -30,13 +30,14 @@ func TestIllegalURL(t *testing.T) {
 
 func TestZeroValue(t *testing.T) {
 	testCases := []struct {
-		err error
+		rawurl string
+		err    error
 	}{
-		{err: ecode.ErrInvalidRequest},
+		{rawurl: "foo", err: ecode.ErrInvalidRequest},
 	}
 
 	for _, tc := range testCases {
-		if _, err := (&Client{}).WHOCasesData(); !errors.Is(err, tc.err) {
+		if _, err := (&Client{}).Get(tc.rawurl); !errors.Is(err, tc.err) {
 			t.Errorf("\"%v\" != \"%v\"", err, tc.err)
 		} else {
 			fmt.Printf("Info: %+v\n", err)
