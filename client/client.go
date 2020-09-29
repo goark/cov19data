@@ -30,17 +30,6 @@ func New(ctx context.Context, cli *http.Client) *Client {
 //Default function returns defauilt Client instance.
 func Default() *Client { return New(context.Background(), nil) }
 
-const (
-	urlWHOCasesData      = "https://covid19.who.int/WHO-COVID-19-global-data.csv"
-	urlTokyoPatientsData = "https://stopcovid19.metro.tokyo.lg.jp/data/130001_tokyo_covid19_patients.csv"
-)
-
-//WHOCasesData returns respons COVID-2019 Cases data by WHO.
-func (c *Client) WHOCasesData() (io.ReadCloser, error) { return c.Get(urlWHOCasesData) }
-
-//TokyoPatientsData returns respons positives data of PCR test by Tokyo-Japan
-func (c *Client) TokyoPatientsData() (io.ReadCloser, error) { return c.Get(urlTokyoPatientsData) }
-
 //Get method returns respons data from URL.
 func (c *Client) Get(rawurl string) (io.ReadCloser, error) {
 	if c == nil {
