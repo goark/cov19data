@@ -1,4 +1,4 @@
-name: golangci-lint and testing
+name: CI
 on:
   push:
     tags:
