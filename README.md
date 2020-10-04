@@ -1,6 +1,7 @@
 # [cov19data] -- Importing WHO COVID-2019 Cases Global Data
 
-[![Build Status](https://github.com/spiegel-im-spiegel/cov19data/workflows/CI/badge.svg)](https://github.com/spiegel-im-spiegel/cov19data/actions)
+[![check vulns](https://github.com/spiegel-im-spiegel/cov19data/workflows/vulns/badge.svg)](https://github.com/spiegel-im-spiegel/cov19data/actions)
+[![lint status](https://github.com/spiegel-im-spiegel/cov19data/workflows/lint/badge.svg)](https://github.com/spiegel-im-spiegel/cov19data/actions)
 [![GitHub license](https://img.shields.io/badge/license-Apache%202-blue.svg)](https://raw.githubusercontent.com/spiegel-im-spiegel/cov19data/master/LICENSE)
 [![GitHub release](http://img.shields.io/github/release/spiegel-im-spiegel/cov19data.svg)](https://github.com/spiegel-im-spiegel/cov19data/releases/latest)
 
