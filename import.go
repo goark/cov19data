@@ -1,10 +1,11 @@
 package cov19data
 
 import (
+	"context"
 	"io"
+	"net/http"
 	"os"
 
-	"github.com/spiegel-im-spiegel/cov19data/client"
 	"github.com/spiegel-im-spiegel/cov19data/csvdata"
 	"github.com/spiegel-im-spiegel/cov19data/ecode"
 	"github.com/spiegel-im-spiegel/cov19data/entity"
@@ -12,6 +13,7 @@ import (
 	"github.com/spiegel-im-spiegel/cov19data/histogram"
 	"github.com/spiegel-im-spiegel/cov19data/values"
 	"github.com/spiegel-im-spiegel/errs"
+	"github.com/spiegel-im-spiegel/fetch"
 )
 
 //Import class
@@ -26,12 +28,17 @@ func New(r io.Reader) *Import {
 }
 
 //NewWeb returns new Import instance
-func NewWeb(c *client.Client) (*Import, error) {
-	r, err := c.Get("https://covid19.who.int/WHO-COVID-19-global-data.csv")
+func NewWeb(ctx context.Context, cli *http.Client) (*Import, error) {
+	u, err := fetch.URL("https://covid19.who.int/WHO-COVID-19-global-data.csv")
 	if err != nil {
 		return nil, errs.Wrap(err)
 	}
-	return New(r), nil
+	resp, err := fetch.New(fetch.WithHTTPClient(cli)).
+		Get(u, fetch.WithContext(ctx))
+	if err != nil {
+		return nil, errs.Wrap(err)
+	}
+	return New(resp.Body()), nil
 }
 
 //Close method close reader if it has io.Closer interface.
