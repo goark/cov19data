@@ -29,8 +29,7 @@ func getData() ([]*entity.JapanData, error) {
 				values.Yesterday().AddDay(6),
 			),
 		),
-		//filter.WithPrefJpCode(values.PrefJpCode(32)), //SHIMANE
-		filter.WithPrefJpCode(values.PrefJpCode(1)), //SHIMANE
+		filter.WithPrefJpCode(values.PrefJpCode(32)), //SHIMANE
 	)
 }
 
