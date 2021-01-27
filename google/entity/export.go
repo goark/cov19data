@@ -28,10 +28,11 @@ func Sort(data []*JapanData) {
 }
 
 //ExportCSV function returns CSV string from list of WHOGlobalData.
-func ExportCSV(data []*JapanData) ([]byte, error) {
+func ExportCSV(data []*JapanData, opts ...filter.FiltersOptFunc) ([]byte, error) {
 	if len(data) == 0 {
 		return nil, errs.Wrap(ecode.ErrNoData)
 	}
+	filter := filter.New(opts...)
 	buf := &bytes.Buffer{}
 	cw := csv.NewWriter(buf)
 	cw.Comma = ','
@@ -52,21 +53,23 @@ func ExportCSV(data []*JapanData) ([]byte, error) {
 		return nil, errs.Wrap(err)
 	}
 	for _, d := range data {
-		if err := cw.Write([]string{
-			d.Date.String(),
-			d.ForecastDate.String(),
-			"JP-" + d.PrefCode.String(),
-			d.PrefName,
-			d.PrefNamekanji,
-			fmt.Sprintf("%v", d.ForecastFlag),
-			string(d.CumulativeCases),
-			string(d.CumulativeDeaths),
-			string(d.NewCases),
-			string(d.NewDeaths),
-			string(d.HospitalizedPatients),
-			string(d.Recovered),
-		}); err != nil {
-			return nil, errs.Wrap(err)
+		if d.CheckFilter(filter) {
+			if err := cw.Write([]string{
+				d.Date.String(),
+				d.ForecastDate.String(),
+				"JP-" + d.PrefCode.String(),
+				d.PrefName,
+				d.PrefNamekanji,
+				fmt.Sprintf("%v", d.ForecastFlag),
+				string(d.CumulativeCases),
+				string(d.CumulativeDeaths),
+				string(d.NewCases),
+				string(d.NewDeaths),
+				string(d.HospitalizedPatients),
+				string(d.Recovered),
+			}); err != nil {
+				return nil, errs.Wrap(err)
+			}
 		}
 	}
 	cw.Flush()

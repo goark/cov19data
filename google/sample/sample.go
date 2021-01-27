@@ -16,13 +16,23 @@ import (
 	"github.com/spiegel-im-spiegel/fetch"
 )
 
-func getData() ([]*entity.JapanData, error) {
+func getAllData() ([]*entity.JapanData, error) {
 	impt, err := google.NewWeb(context.Background(), fetch.New())
 	if err != nil {
 		return nil, err
 	}
 	defer impt.Close()
-	return impt.Data(
+	return impt.Data()
+}
+
+func main() {
+	data, err := getAllData()
+	if err != nil {
+		fmt.Fprintln(os.Stderr, err)
+		return
+	}
+	b, err := entity.ExportCSV(
+		data,
 		filter.WithPeriod(
 			values.NewPeriod(
 				values.Yesterday().AddDay(-27),
@@ -31,15 +41,6 @@ func getData() ([]*entity.JapanData, error) {
 		),
 		filter.WithPrefJpCode(values.PrefJpCode(32)), //SHIMANE
 	)
-}
-
-func main() {
-	data, err := getData()
-	if err != nil {
-		fmt.Fprintln(os.Stderr, err)
-		return
-	}
-	b, err := entity.ExportCSV(data)
 	if err != nil {
 		fmt.Fprintln(os.Stderr, err)
 		return
