@@ -22,14 +22,14 @@ import (
     "context"
     "fmt"
     "io"
-    "net/http"
     "os"
 
     "github.com/spiegel-im-spiegel/cov19data"
+    "github.com/spiegel-im-spiegel/fetch"
 )
 
 func main() {
-    impt, err := cov19data.NewWeb(context.Background(), http.DefaultClient)
+    impt, err := cov19data.NewWeb(context.Background(), fetch.New())
     if err != nil {
         fmt.Fprintf(os.Stderr, "%+v\n", err)
         return
@@ -51,7 +51,6 @@ import (
     "context"
     "fmt"
     "io"
-    "net/http"
     "os"
     "time"
 
@@ -60,10 +59,11 @@ import (
     "github.com/spiegel-im-spiegel/cov19data/filter"
     "github.com/spiegel-im-spiegel/cov19data/values"
     "github.com/spiegel-im-spiegel/errs"
+    "github.com/spiegel-im-spiegel/fetch"
 )
 
 func getData() ([]*entity.GlobalData, error) {
-    impt, err := cov19data.NewWeb(context.Background(), http.DefaultClient)
+    impt, err := cov19data.NewWeb(context.Background(), fetch.New())
     if err != nil {
         return nil, errs.Wrap(err)
     }
@@ -116,7 +116,6 @@ import (
     "context"
     "fmt"
     "io"
-    "net/http"
     "os"
     "time"
 
@@ -125,10 +124,11 @@ import (
     "github.com/spiegel-im-spiegel/cov19data/histogram"
     "github.com/spiegel-im-spiegel/cov19data/values"
     "github.com/spiegel-im-spiegel/errs"
+    "github.com/spiegel-im-spiegel/fetch"
 )
 
 func getHist() ([]*histogram.HistData, error) {
-    impt, err := cov19data.NewWeb(context.Background(), http.DefaultClient)
+    impt, err := cov19data.NewWeb(context.Background(), fetch.New())
     if err != nil {
         return nil, errs.Wrap(err)
     }

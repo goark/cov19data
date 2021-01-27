@@ -1,36 +1,17 @@
 package ecode
 
-import "fmt"
+import "errors"
 
-//ECode is error codes for books-data
-type ECode int
-
-const (
-	ErrNullPointer ECode = iota + 1
-	ErrInvalidDateForm
-	ErrInvalidRequest
-	ErrHTTPStatus
-	ErrNoData
-	ErrInvalidRecord
+var (
+	ErrNullPointer     = errors.New("null reference instance")
+	ErrInvalidDateForm = errors.New("invalid date form")
+	ErrInvalidRequest  = errors.New("invalid Request")
+	ErrHTTPStatus      = errors.New("bad HTTP(S) status")
+	ErrNoData          = errors.New("no data")
+	ErrInvalidRecord   = errors.New("invalid record")
 )
 
-var errMessages = map[ECode]string{
-	ErrNullPointer:     "Null reference instance",
-	ErrInvalidDateForm: "Invalid date form",
-	ErrInvalidRequest:  "Invalid Request",
-	ErrHTTPStatus:     "Bad HTTP(S) status",
-	ErrNoData:        "No data",
-	ErrInvalidRecord: "Invalid record",
-}
-
-func (e ECode) Error() string {
-	if s, ok := errMessages[e]; ok {
-		return s
-	}
-	return fmt.Sprintf("unknown error (%d)", int(e))
-}
-
-/* Copyright 2020 Spiegel
+/* Copyright 2020 -2021 Spiegel
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.

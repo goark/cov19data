@@ -1,4 +1,4 @@
-package cov19data
+package google
 
 import (
 	"context"
@@ -7,8 +7,8 @@ import (
 
 	"github.com/spiegel-im-spiegel/cov19data/csvdata"
 	"github.com/spiegel-im-spiegel/cov19data/ecode"
-	"github.com/spiegel-im-spiegel/cov19data/entity"
 	"github.com/spiegel-im-spiegel/cov19data/filter"
+	"github.com/spiegel-im-spiegel/cov19data/google/entity"
 	"github.com/spiegel-im-spiegel/cov19data/histogram"
 	"github.com/spiegel-im-spiegel/cov19data/values"
 	"github.com/spiegel-im-spiegel/errs"
@@ -23,12 +23,12 @@ type Import struct {
 
 //New returns new Import instance
 func New(r io.Reader) *Import {
-	return &Import{reader: r, csvdata: csvdata.New(r, 8, true)}
+	return &Import{reader: r, csvdata: csvdata.New(r, 25, true)}
 }
 
 //NewWeb returns new Import instance
 func NewWeb(ctx context.Context, cli fetch.Client) (*Import, error) {
-	u, err := fetch.URL("https://covid19.who.int/WHO-COVID-19-global-data.csv")
+	u, err := fetch.URL("https://storage.googleapis.com/covid-external/forecast_JAPAN_PREFECTURE_28.csv")
 	if err != nil {
 		return nil, errs.Wrap(err)
 	}
@@ -58,12 +58,12 @@ func (i *Import) RawReader() io.Reader {
 }
 
 //Data method returns entity.GlobalData list
-func (i *Import) Data(opts ...filter.FiltersOptFunc) ([]*entity.GlobalData, error) {
+func (i *Import) Data(opts ...filter.FiltersOptFunc) ([]*entity.JapanData, error) {
 	if i == nil {
 		return nil, errs.Wrap(ecode.ErrNoData)
 	}
 	filter := filter.New(opts...)
-	records := []*entity.GlobalData{}
+	records := []*entity.JapanData{}
 	for {
 		record, err := i.next()
 		if err != nil {
@@ -76,6 +76,7 @@ func (i *Import) Data(opts ...filter.FiltersOptFunc) ([]*entity.GlobalData, erro
 			records = append(records, record)
 		}
 	}
+	entity.Sort(records)
 	return records, nil
 }
 
@@ -109,7 +110,7 @@ func (i *Import) Histogram(period values.Period, step int, opts ...filter.Filter
 	return histList, nil
 }
 
-func (i *Import) next() (*entity.GlobalData, error) {
+func (i *Import) next() (*entity.JapanData, error) {
 	if i == nil {
 		return nil, errs.Wrap(ecode.ErrNoData)
 	}
@@ -117,10 +118,10 @@ func (i *Import) next() (*entity.GlobalData, error) {
 	if err != nil {
 		return nil, errs.Wrap(err)
 	}
-	return entity.New(elms[0], elms[1], elms[3], elms[4], elms[5], elms[6], elms[7])
+	return entity.New(elms[0], elms[1], elms[2], elms[15], elms[16], elms[17], elms[18], elms[19], elms[20], elms[21], elms[22], elms[23], elms[24])
 }
 
-/* Copyright 2020-2021 Spiegel
+/* Copyright 2021 Spiegel
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.

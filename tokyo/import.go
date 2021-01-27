@@ -4,7 +4,6 @@ import (
 	"context"
 	"encoding/json"
 	"io"
-	"net/http"
 	"os"
 
 	"github.com/spiegel-im-spiegel/cov19data/csvdata"
@@ -26,17 +25,15 @@ type Import struct {
 //New returns new Import instance
 func New(r io.Reader) *Import {
 	return &Import{reader: r, csvdata: csvdata.New(r, 16, true)}
-
 }
 
 //NewWeb returns new Import instance
-func NewWeb(ctx context.Context, cli *http.Client) (*Import, error) {
+func NewWeb(ctx context.Context, cli fetch.Client) (*Import, error) {
 	u, err := fetch.URL("https://stopcovid19.metro.tokyo.lg.jp/data/130001_tokyo_covid19_patients.csv")
 	if err != nil {
 		return nil, errs.Wrap(err)
 	}
-	resp, err := fetch.New(fetch.WithHTTPClient(cli)).
-		Get(u, fetch.WithContext(ctx))
+	resp, err := cli.Get(u, fetch.WithContext(ctx))
 	if err != nil {
 		return nil, errs.Wrap(err)
 	}
@@ -124,7 +121,7 @@ func (i *Import) next() (*entity.TokyoData, error) {
 	return entity.New(elms[4], elms[1], elms[7], elms[8], elms[9], elms[15])
 }
 
-/* Copyright 2020 Spiegel
+/* Copyright 2020-2021 Spiegel
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
