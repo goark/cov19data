@@ -15,12 +15,12 @@ import (
 //HistData is class of cases data record for histgram.
 type HistData struct {
 	Period values.Period
-	Cases  int64
-	Deaths int64
+	Cases  float64
+	Deaths float64
 }
 
 //New function creates a new HistData instance.
-func New(period values.Period, cases, deaths int64) *HistData {
+func New(period values.Period, cases, deaths float64) *HistData {
 	return &HistData{Period: period, Cases: cases, Deaths: deaths}
 }
 
@@ -33,7 +33,7 @@ func (h *HistData) Contains(dt values.Date) bool {
 }
 
 //AddCases method adds cases count in HistData
-func (h *HistData) AddCases(cases int64) *HistData {
+func (h *HistData) AddCases(cases float64) *HistData {
 	if h == nil {
 		return nil
 	}
@@ -42,7 +42,7 @@ func (h *HistData) AddCases(cases int64) *HistData {
 }
 
 //AddDeaths method adds deaths count in HistData
-func (h *HistData) AddDeaths(deaths int64) *HistData {
+func (h *HistData) AddDeaths(deaths float64) *HistData {
 	if h == nil {
 		return nil
 	}
@@ -83,10 +83,10 @@ func NewList(p values.Period, step int) ([]*HistData, values.Period) {
 func AddData(histList []*HistData, dt values.Date, cases, deaths json.Number) {
 	for _, h := range histList {
 		if h.Period.Contains(dt) {
-			if n, err := cases.Int64(); err == nil {
+			if n, err := cases.Float64(); err == nil {
 				h.AddCases(n)
 			}
-			if n, err := deaths.Int64(); err == nil {
+			if n, err := deaths.Float64(); err == nil {
 				h.AddDeaths(n)
 			}
 			return
@@ -114,8 +114,8 @@ func ExportCSV(data []*HistData) ([]byte, error) {
 		if err := cw.Write([]string{
 			d.Period.StringStart(),
 			d.Period.StringEnd(),
-			strconv.FormatInt(d.Cases, 10),
-			strconv.FormatInt(d.Deaths, 10),
+			strconv.FormatFloat(d.Cases, 'f', -1, 64),
+			strconv.FormatFloat(d.Deaths, 'f', -1, 64),
 		}); err != nil {
 			return nil, errs.Wrap(err)
 		}
@@ -132,7 +132,7 @@ func ExportJSON(data []*HistData) ([]byte, error) {
 	return json.Marshal(data)
 }
 
-/* Copyright 2020 Spiegel
+/* Copyright 2020-2021 Spiegel
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.

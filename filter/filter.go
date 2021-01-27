@@ -5,6 +5,7 @@ import "github.com/spiegel-im-spiegel/cov19data/values"
 //Filters is a filter class for entity classes
 type Filters struct {
 	periods      []values.Period
+	prefJpCodes  []values.PrefJpCode
 	countryCodes []values.CountryCode
 	regionCodes  []values.RegionCode
 }
@@ -16,6 +17,7 @@ type FiltersOptFunc func(*Filters)
 func New(opts ...FiltersOptFunc) *Filters {
 	f := &Filters{
 		periods:      []values.Period{},
+		prefJpCodes:  []values.PrefJpCode{},
 		countryCodes: []values.CountryCode{},
 		regionCodes:  []values.RegionCode{},
 	}
@@ -39,6 +41,25 @@ func WithPeriod(period values.Period) FiltersOptFunc {
 			}
 			if !existFlag {
 				f.periods = append(f.periods, period)
+			}
+		}
+	}
+}
+
+//WithPrefJpCode function returns FiltersOptFunc function value.
+//This function is used in New functions that represents Marketplace data.
+func WithPrefJpCode(code values.PrefJpCode) FiltersOptFunc {
+	return func(f *Filters) {
+		if f != nil {
+			existFlag := false
+			for _, c := range f.prefJpCodes {
+				if c == code {
+					existFlag = true
+					break
+				}
+			}
+			if !existFlag {
+				f.prefJpCodes = append(f.prefJpCodes, code)
 			}
 		}
 	}
@@ -98,7 +119,26 @@ func (f *Filters) Period(dt values.Date) bool {
 	return false
 }
 
-//CountryCode method returns true if CountryCodes filter contains date of parameter.
+//PrefJpCode method returns true if PrefJpCode filter contains Pref Code of parameter.
+func (f *Filters) PrefJpCode(code values.PrefJpCode) bool {
+	if f == nil {
+		return true
+	}
+	if !f.CountryCode(values.CC_JP) {
+		return false
+	}
+	if len(f.prefJpCodes) == 0 {
+		return true
+	}
+	for _, c := range f.prefJpCodes {
+		if c == code {
+			return true
+		}
+	}
+	return false
+}
+
+//CountryCode method returns true if CountryCodes filter contains Country Codes of parameter.
 func (f *Filters) CountryCode(code values.CountryCode) bool {
 	if f == nil {
 		return true
@@ -114,7 +154,7 @@ func (f *Filters) CountryCode(code values.CountryCode) bool {
 	return false
 }
 
-//CountryCode method returns true if CountryCodes filter contains date of parameter.
+//CountryCode method returns true if CountryCodes filter contains Region Code of parameter.
 func (f *Filters) RegionCode(code values.RegionCode) bool {
 	if f == nil {
 		return true
@@ -130,7 +170,7 @@ func (f *Filters) RegionCode(code values.RegionCode) bool {
 	return false
 }
 
-/* Copyright 2020 Spiegel
+/* Copyright 2020-2021 Spiegel
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
