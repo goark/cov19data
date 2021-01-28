@@ -44,7 +44,7 @@ func New(prefCode, prefname, date, cumulativeCases, cumulativeDeaths, hospitaliz
 	return &JapanData{
 		Date:                 dt,                                //発生日
 		ForecastDate:         fdt,                               //計測日
-		PrefCode:             values.GetPrefJpCode(prefCode),    //都道府県コード
+		PrefCode:             values.GetFromPrefCode(prefCode),  //都道府県コード
 		PrefName:             prefname,                          //都道府県（ローマ字）
 		PrefNamekanji:        prefNamekanji,                     //都道府県（漢字）
 		ForecastFlag:         fflag,                             //true なら予測値, false なら 実測値
