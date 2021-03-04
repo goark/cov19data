@@ -5,25 +5,25 @@ import (
 	"io"
 	"os"
 
-	"github.com/spiegel-im-spiegel/cov19data/csvdata"
 	"github.com/spiegel-im-spiegel/cov19data/ecode"
 	"github.com/spiegel-im-spiegel/cov19data/entity"
 	"github.com/spiegel-im-spiegel/cov19data/filter"
 	"github.com/spiegel-im-spiegel/cov19data/histogram"
 	"github.com/spiegel-im-spiegel/cov19data/values"
+	"github.com/spiegel-im-spiegel/csvdata"
 	"github.com/spiegel-im-spiegel/errs"
 	"github.com/spiegel-im-spiegel/fetch"
 )
 
 //Import class
 type Import struct {
-	reader  io.Reader
-	csvdata *csvdata.Reader
+	reader io.Reader
+	data   *csvdata.Reader
 }
 
 //New returns new Import instance
 func New(r io.Reader) *Import {
-	return &Import{reader: r, csvdata: csvdata.New(r, 8, true)}
+	return &Import{reader: r, data: csvdata.New(r, true).WithFieldsPerRecord(8)}
 }
 
 //NewWeb returns new Import instance
@@ -113,11 +113,18 @@ func (i *Import) next() (*entity.GlobalData, error) {
 	if i == nil {
 		return nil, errs.Wrap(ecode.ErrNoData)
 	}
-	elms, err := i.csvdata.Next()
-	if err != nil {
+	if err := i.data.Next(); err != nil {
 		return nil, errs.Wrap(err)
 	}
-	return entity.New(elms[0], elms[1], elms[3], elms[4], elms[5], elms[6], elms[7])
+	return entity.New(
+		i.data.Get(0),
+		i.data.Get(1),
+		i.data.Get(3),
+		i.data.Get(4),
+		i.data.Get(5),
+		i.data.Get(6),
+		i.data.Get(7),
+	)
 }
 
 /* Copyright 2020-2021 Spiegel
