@@ -60,14 +60,14 @@ func (i *Import) RawReader() io.Reader {
 //Data method returns entity.GlobalData list
 func (i *Import) Data(opts ...filter.FiltersOptFunc) ([]*entity.GlobalData, error) {
 	if i == nil {
-		return nil, errs.Wrap(ecode.ErrNoData)
+		return nil, errs.Wrap(ecode.ErrNullPointer)
 	}
 	filter := filter.New(opts...)
 	records := []*entity.GlobalData{}
 	for {
 		record, err := i.next()
 		if err != nil {
-			if errs.Is(err, ecode.ErrNoData) {
+			if errs.Is(err, io.EOF) {
 				break
 			}
 			return nil, errs.Wrap(err)
@@ -82,7 +82,7 @@ func (i *Import) Data(opts ...filter.FiltersOptFunc) ([]*entity.GlobalData, erro
 //Data method returns entity.GlobalData list
 func (i *Import) Histogram(period values.Period, step int, opts ...filter.FiltersOptFunc) ([]*histogram.HistData, error) {
 	if i == nil {
-		return nil, errs.Wrap(ecode.ErrNoData)
+		return nil, errs.Wrap(ecode.ErrNullPointer)
 	}
 	if step < 1 {
 		return nil, errs.Wrap(os.ErrInvalid, errs.WithContext("period", period.String()), errs.WithContext("step", step))
@@ -96,7 +96,7 @@ func (i *Import) Histogram(period values.Period, step int, opts ...filter.Filter
 	for {
 		record, err := i.next()
 		if err != nil {
-			if errs.Is(err, ecode.ErrNoData) {
+			if errs.Is(err, io.EOF) {
 				break
 			}
 			return nil, errs.Wrap(err)
@@ -111,7 +111,7 @@ func (i *Import) Histogram(period values.Period, step int, opts ...filter.Filter
 
 func (i *Import) next() (*entity.GlobalData, error) {
 	if i == nil {
-		return nil, errs.Wrap(ecode.ErrNoData)
+		return nil, errs.Wrap(ecode.ErrNullPointer)
 	}
 	if err := i.data.Next(); err != nil {
 		return nil, errs.Wrap(err)
