@@ -19,12 +19,12 @@ import (
 //Import class
 type Import struct {
 	reader io.Reader
-	data   *csvdata.Reader
+	data   *csvdata.Rows
 }
 
 //New returns new Import instance
 func New(r io.Reader) *Import {
-	return &Import{reader: r, data: csvdata.New(r, true).WithFieldsPerRecord(17)}
+	return &Import{reader: r, data: csvdata.NewRows(csvdata.New(r).WithFieldsPerRecord(17), true)}
 }
 
 //NewWeb returns new Import instance
@@ -45,9 +45,7 @@ func (i *Import) Close() {
 	if i == nil {
 		return
 	}
-	if c, ok := i.reader.(io.Closer); ok {
-		c.Close()
-	}
+	i.data.Close()
 }
 
 //RawReader method returns raw data stream
