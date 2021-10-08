@@ -18,6 +18,9 @@ import "github.com/spiegel-im-spiegel/cov19data"
 ### Get COVID-2019 Global Data (raw data) from WHO Web Site
 
 ```go
+//go:build run
+// +build run
+
 package main
 
 import (
@@ -46,6 +49,9 @@ func main() {
 ### Import COVID-2019 Global Data from WHO Web Site to Structured Dataset.
 
 ```go
+//go:build run
+// +build run
+
 package main
 
 import (
@@ -85,12 +91,12 @@ func getData() ([]*entity.GlobalData, error) {
 func main() {
     data, err := getData()
     if err != nil {
-        fmt.Fprintf(os.Stderr, "%+v\n", err)
+        fmt.Printf("%+v\n", err)
         return
     }
     b, err := entity.ExportCSV(data)
     if err != nil {
-        fmt.Fprintf(os.Stderr, "%v\n", err)
+        fmt.Printf("%v\n", err)
         return
     }
     if _, err := io.Copy(os.Stdout, bytes.NewReader(b)); err != nil {
@@ -111,6 +117,9 @@ func main() {
 ### Make Histogram data by COVID-2019 Global Data from WHO Web Site.
 
 ```go
+//go:build run
+// +build run
+
 package main
 
 import (
@@ -168,5 +177,9 @@ func main() {
     // 2020-09-22,2020-09-28,2991,48
 }
 ```
+
+## Modules Requirement Graph
+
+[![dependency.png](./dependency.png)](./dependency.png)
 
 [cov19data]: https://github.com/spiegel-im-spiegel/cov19data "spiegel-im-spiegel/cov19data: Importing WHO COVID-2019 Cases Global Data"
