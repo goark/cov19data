@@ -1,18 +1,20 @@
 # [cov19data] -- Importing WHO COVID-2019 Cases Global Data
 
-[![check vulns](https://github.com/spiegel-im-spiegel/cov19data/workflows/vulns/badge.svg)](https://github.com/spiegel-im-spiegel/cov19data/actions)
-[![lint status](https://github.com/spiegel-im-spiegel/cov19data/workflows/lint/badge.svg)](https://github.com/spiegel-im-spiegel/cov19data/actions)
-[![GitHub license](https://img.shields.io/badge/license-Apache%202-blue.svg)](https://raw.githubusercontent.com/spiegel-im-spiegel/cov19data/master/LICENSE)
-[![GitHub release](http://img.shields.io/github/release/spiegel-im-spiegel/cov19data.svg)](https://github.com/spiegel-im-spiegel/cov19data/releases/latest)
+[![check vulns](https://github.com/goark/cov19data/workflows/vulns/badge.svg)](https://github.com/goark/cov19data/actions)
+[![lint status](https://github.com/goark/cov19data/workflows/lint/badge.svg)](https://github.com/goark/cov19data/actions)
+[![GitHub license](https://img.shields.io/badge/license-Apache%202-blue.svg)](https://raw.githubusercontent.com/goark/cov19data/master/LICENSE)
+[![GitHub release](http://img.shields.io/github/release/goark/cov19data.svg)](https://github.com/goark/cov19data/releases/latest)
 
 This package is required Go 1.16 or later.
+
+**Migrated repository to [github.com/goark/cov19data][cov19data]**
 
 ## Usage
 
 ### Import This Package
 
 ```go
-import "github.com/spiegel-im-spiegel/cov19data"
+import "github.com/goark/cov19data"
 ```
 
 ### Get COVID-2019 Global Data (raw data) from WHO Web Site
@@ -29,8 +31,8 @@ import (
     "io"
     "os"
 
-    "github.com/spiegel-im-spiegel/cov19data"
-    "github.com/spiegel-im-spiegel/fetch"
+    "github.com/goark/cov19data"
+    "github.com/goark/fetch"
 )
 
 func main() {
@@ -62,12 +64,12 @@ import (
     "os"
     "time"
 
-    "github.com/spiegel-im-spiegel/cov19data"
-    "github.com/spiegel-im-spiegel/cov19data/entity"
-    "github.com/spiegel-im-spiegel/cov19data/filter"
-    "github.com/spiegel-im-spiegel/cov19data/values"
-    "github.com/spiegel-im-spiegel/errs"
-    "github.com/spiegel-im-spiegel/fetch"
+    "github.com/goark/cov19data"
+    "github.com/goark/cov19data/entity"
+    "github.com/goark/cov19data/filter"
+    "github.com/goark/cov19data/values"
+    "github.com/goark/errs"
+    "github.com/goark/fetch"
 )
 
 func getData() ([]*entity.GlobalData, error) {
@@ -130,12 +132,12 @@ import (
     "os"
     "time"
 
-    "github.com/spiegel-im-spiegel/cov19data"
-    "github.com/spiegel-im-spiegel/cov19data/filter"
-    "github.com/spiegel-im-spiegel/cov19data/histogram"
-    "github.com/spiegel-im-spiegel/cov19data/values"
-    "github.com/spiegel-im-spiegel/errs"
-    "github.com/spiegel-im-spiegel/fetch"
+    "github.com/goark/cov19data"
+    "github.com/goark/cov19data/filter"
+    "github.com/goark/cov19data/histogram"
+    "github.com/goark/cov19data/values"
+    "github.com/goark/errs"
+    "github.com/goark/fetch"
 )
 
 func getHist() ([]*histogram.HistData, error) {
@@ -182,4 +184,4 @@ func main() {
 
 [![dependency.png](./dependency.png)](./dependency.png)
 
-[cov19data]: https://github.com/spiegel-im-spiegel/cov19data "spiegel-im-spiegel/cov19data: Importing WHO COVID-2019 Cases Global Data"
+[cov19data]: https://github.com/goark/cov19data "goark/cov19data: Importing WHO COVID-2019 Cases Global Data"

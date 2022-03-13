@@ -9,8 +9,8 @@ import (
 	"io"
 	"os"
 
-	"github.com/spiegel-im-spiegel/cov19data"
-	"github.com/spiegel-im-spiegel/fetch"
+	"github.com/goark/cov19data"
+	"github.com/goark/fetch"
 )
 
 func main() {

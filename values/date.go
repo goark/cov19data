@@ -5,8 +5,8 @@ import (
 	"strings"
 	"time"
 
-	"github.com/spiegel-im-spiegel/cov19data/ecode"
-	"github.com/spiegel-im-spiegel/errs"
+	"github.com/goark/cov19data/ecode"
+	"github.com/goark/errs"
 )
 
 //Time is wrapper class of time.Time.

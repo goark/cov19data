@@ -1,6 +1,6 @@
 package filter
 
-import "github.com/spiegel-im-spiegel/cov19data/values"
+import "github.com/goark/cov19data/values"
 
 //Filters is a filter class for entity classes
 type Filters struct {

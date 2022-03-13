@@ -6,14 +6,14 @@ import (
 	"io"
 	"os"
 
-	"github.com/spiegel-im-spiegel/cov19data/ecode"
-	"github.com/spiegel-im-spiegel/cov19data/filter"
-	"github.com/spiegel-im-spiegel/cov19data/histogram"
-	"github.com/spiegel-im-spiegel/cov19data/tokyo/entity"
-	"github.com/spiegel-im-spiegel/cov19data/values"
-	"github.com/spiegel-im-spiegel/csvdata"
-	"github.com/spiegel-im-spiegel/errs"
-	"github.com/spiegel-im-spiegel/fetch"
+	"github.com/goark/cov19data/ecode"
+	"github.com/goark/cov19data/filter"
+	"github.com/goark/cov19data/histogram"
+	"github.com/goark/cov19data/tokyo/entity"
+	"github.com/goark/cov19data/values"
+	"github.com/goark/csvdata"
+	"github.com/goark/errs"
+	"github.com/goark/fetch"
 )
 
 //Import class

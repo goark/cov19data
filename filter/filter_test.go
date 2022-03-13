@@ -4,7 +4,7 @@ import (
 	"testing"
 	"time"
 
-	"github.com/spiegel-im-spiegel/cov19data/values"
+	"github.com/goark/cov19data/values"
 )
 
 func TestPeriod(t *testing.T) {

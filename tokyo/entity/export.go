@@ -5,8 +5,8 @@ import (
 	"encoding/csv"
 	"encoding/json"
 
-	"github.com/spiegel-im-spiegel/cov19data/ecode"
-	"github.com/spiegel-im-spiegel/errs"
+	"github.com/goark/cov19data/ecode"
+	"github.com/goark/errs"
 )
 
 //ExportCSV function returns CSV string from list of WHOGlobalData.

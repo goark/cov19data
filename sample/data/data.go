@@ -11,12 +11,12 @@ import (
 	"os"
 	"time"
 
-	"github.com/spiegel-im-spiegel/cov19data"
-	"github.com/spiegel-im-spiegel/cov19data/entity"
-	"github.com/spiegel-im-spiegel/cov19data/filter"
-	"github.com/spiegel-im-spiegel/cov19data/values"
-	"github.com/spiegel-im-spiegel/errs"
-	"github.com/spiegel-im-spiegel/fetch"
+	"github.com/goark/cov19data"
+	"github.com/goark/cov19data/entity"
+	"github.com/goark/cov19data/filter"
+	"github.com/goark/cov19data/values"
+	"github.com/goark/errs"
+	"github.com/goark/fetch"
 )
 
 func getData() ([]*entity.GlobalData, error) {

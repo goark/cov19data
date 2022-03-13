@@ -7,9 +7,9 @@ import (
 	"sort"
 	"strconv"
 
-	"github.com/spiegel-im-spiegel/cov19data/ecode"
-	"github.com/spiegel-im-spiegel/cov19data/values"
-	"github.com/spiegel-im-spiegel/errs"
+	"github.com/goark/cov19data/ecode"
+	"github.com/goark/cov19data/values"
+	"github.com/goark/errs"
 )
 
 //HistData is class of cases data record for histgram.
