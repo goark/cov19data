@@ -1,9 +1,9 @@
 package entity
 
 import (
-	"github.com/spiegel-im-spiegel/cov19data/filter"
-	"github.com/spiegel-im-spiegel/cov19data/values"
-	"github.com/spiegel-im-spiegel/errs"
+	"github.com/goark/cov19data/filter"
+	"github.com/goark/cov19data/values"
+	"github.com/goark/errs"
 )
 
 //WHOGlobalData is entity class for Tokyo COVID-19 patients data

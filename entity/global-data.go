@@ -3,9 +3,9 @@ package entity
 import (
 	"encoding/json"
 
-	"github.com/spiegel-im-spiegel/cov19data/filter"
-	"github.com/spiegel-im-spiegel/cov19data/values"
-	"github.com/spiegel-im-spiegel/errs"
+	"github.com/goark/cov19data/filter"
+	"github.com/goark/cov19data/values"
+	"github.com/goark/errs"
 )
 
 //GlobalData is entity class for WHO COVID-19 global data
