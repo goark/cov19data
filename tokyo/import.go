@@ -16,6 +16,13 @@ import (
 	"github.com/goark/fetch"
 )
 
+var urls = []string{
+	"https://stopcovid19.metro.tokyo.lg.jp/data/130001_tokyo_covid19_patients_2020.csv",
+	"https://stopcovid19.metro.tokyo.lg.jp/data/130001_tokyo_covid19_patients_2021.csv",
+	"https://stopcovid19.metro.tokyo.lg.jp/data/130001_tokyo_covid19_patients_2022.csv",
+	"https://stopcovid19.metro.tokyo.lg.jp/data/130001_tokyo_covid19_patients_2022-1.csv",
+}
+
 //Import class
 type Import struct {
 	reader io.Reader
@@ -29,15 +36,26 @@ func New(r io.Reader) *Import {
 
 //NewWeb returns new Import instance
 func NewWeb(ctx context.Context, cli fetch.Client) (*Import, error) {
-	u, err := fetch.URL("https://stopcovid19.metro.tokyo.lg.jp/data/130001_tokyo_covid19_patients.csv")
+	cc := newConcat()
+	for i, u := range urls {
+		if err := importFromWeb(ctx, cli, u, cc, i == 0); err != nil {
+			return nil, errs.Wrap(err)
+		}
+	}
+	return New(cc.reader()), nil
+}
+
+func importFromWeb(ctx context.Context, cli fetch.Client, ustr string, cc *concat, withHeader bool) error {
+	u, err := fetch.URL(ustr)
 	if err != nil {
-		return nil, errs.Wrap(err)
+		return errs.Wrap(err)
 	}
 	resp, err := cli.Get(u, fetch.WithContext(ctx))
 	if err != nil {
-		return nil, errs.Wrap(err)
+		return errs.Wrap(err)
 	}
-	return New(resp.Body()), nil
+	defer resp.Close()
+	return cc.cat(resp.Body(), withHeader)
 }
 
 //Close method close reader if it has io.Closer interface.
@@ -125,7 +143,7 @@ func (i *Import) next() (*entity.TokyoData, error) {
 	)
 }
 
-/* Copyright 2020-2021 Spiegel
+/* Copyright 2020-2022 Spiegel
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.
