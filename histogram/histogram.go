@@ -67,11 +67,11 @@ func NewList(p values.Period, step int) ([]*HistData, values.Period) {
 		to := next
 		next = to.AddDay(-step)
 		from := next.AddDay(1)
-		start = from
 		histList = append(histList, New(values.NewPeriod(from, to), 0, 0))
 		if values.NewPeriod(from, to).Contains(p.Start) {
 			break
 		}
+		start = from
 	}
 	sort.Slice(histList, func(i, j int) bool {
 		return histList[i].Period.End.Before(histList[j].Period.End)

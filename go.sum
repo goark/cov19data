@@ -1,6 +1,8 @@
-github.com/goark/csvdata v0.5.0 h1:k5oQXmXdMce6+i6mLytffAa44b22KduCA52A14cXe+4=
-github.com/goark/csvdata v0.5.0/go.mod h1:qVxMNmElo3nT5KjMz0HjOygu5JrEk0VUCrOpoOJmrR4=
+github.com/goark/csvdata v0.5.3 h1:rab4H0lu67EPks4F9ekcy2DWwTFH5z8gxnp77es91G0=
+github.com/goark/csvdata v0.5.3/go.mod h1:3bm237hGfTaOr2IReP2bbDSmEdosrkAse0iNoUQztvA=
 github.com/goark/errs v1.1.0 h1:FKnyw4LVyRADIjM8Nj0Up6r0/y5cfADvZAd1E+tthXE=
 github.com/goark/errs v1.1.0/go.mod h1:TtaPEoadm2mzqzfXdkkfpN2xuniCFm2q4JH+c1qzaqw=
 github.com/goark/fetch v0.3.0 h1:2m32EGOLBi99RzI5urFfmv5++CMqfenVw7NH8z/lbX8=
 github.com/goark/fetch v0.3.0/go.mod h1:sqDdPbbHeIjDVeHrgvzhHpkUr8X9pVC9DgJoVwU02x0=
+golang.org/x/text v0.3.7 h1:olpwvP2KacW1ZWvsR7uQhoyTYvKAupfQrRGBFM352Gk=
+golang.org/x/text v0.3.7/go.mod h1:u+2+/6zg+i71rQMx5EYifcz6MCKuco9NR6JIITiCfzQ=
