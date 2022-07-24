@@ -4,6 +4,9 @@ import (
 	"fmt"
 	"strconv"
 	"strings"
+
+	"golang.org/x/text/cases"
+	"golang.org/x/text/language"
 )
 
 //PrefJpCode is prefecture code in Japan
@@ -157,7 +160,7 @@ func (pc PrefJpCode) NameLower() string {
 }
 
 func (pc PrefJpCode) Title() string {
-	return strings.Title(pc.NameLower())
+	return cases.Title(language.Und, cases.NoLower).String(pc.NameLower())
 }
 
 //UnmarshalJSON method returns result of Unmarshal for json.Unmarshal().

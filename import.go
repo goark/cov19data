@@ -85,11 +85,10 @@ func (i *Import) Histogram(period values.Period, step int, opts ...filter.Filter
 	if step < 1 {
 		return nil, errs.Wrap(os.ErrInvalid, errs.WithContext("period", period.String()), errs.WithContext("step", step))
 	}
-	histList, p := histogram.NewList(period, step)
+	histList, _ := histogram.NewList(period, step)
 	if len(histList) == 0 {
 		return nil, errs.Wrap(os.ErrInvalid, errs.WithContext("period", period.String()), errs.WithContext("step", step))
 	}
-	period = p
 	filter := filter.New(opts...)
 	for {
 		record, err := i.next()
