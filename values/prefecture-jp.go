@@ -160,7 +160,7 @@ func (pc PrefJpCode) NameLower() string {
 }
 
 func (pc PrefJpCode) Title() string {
-	return cases.Title(language.Und, cases.NoLower).String(pc.NameLower())
+	return cases.Title(language.Und).String(pc.Name())
 }
 
 //UnmarshalJSON method returns result of Unmarshal for json.Unmarshal().
