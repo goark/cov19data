@@ -15,18 +15,18 @@ import (
 	"github.com/goark/fetch"
 )
 
-//Import class
+// Import class
 type Import struct {
 	reader io.Reader
 	data   *csvdata.Rows
 }
 
-//New returns new Import instance
+// New returns new Import instance
 func New(r io.Reader) *Import {
-	return &Import{reader: r, data: csvdata.NewRows(csvdata.New(r).WithFieldsPerRecord(8), true)}
+	return &Import{reader: r, data: csvdata.NewRows(csvdata.New(r).WithTrimSpace(true).WithFieldsPerRecord(8), true)}
 }
 
-//NewWeb returns new Import instance
+// NewWeb returns new Import instance
 func NewWeb(ctx context.Context, cli fetch.Client) (*Import, error) {
 	u, err := fetch.URL("https://covid19.who.int/WHO-COVID-19-global-data.csv")
 	if err != nil {
@@ -39,7 +39,7 @@ func NewWeb(ctx context.Context, cli fetch.Client) (*Import, error) {
 	return New(resp.Body()), nil
 }
 
-//Close method close reader if it has io.Closer interface.
+// Close method close reader if it has io.Closer interface.
 func (i *Import) Close() {
 	if i == nil {
 		return
@@ -47,7 +47,7 @@ func (i *Import) Close() {
 	i.data.Close()
 }
 
-//RawReader method returns raw data stream
+// RawReader method returns raw data stream
 func (i *Import) RawReader() io.Reader {
 	if i == nil {
 		return nil
@@ -55,7 +55,7 @@ func (i *Import) RawReader() io.Reader {
 	return i.reader
 }
 
-//Data method returns entity.GlobalData list
+// Data method returns entity.GlobalData list
 func (i *Import) Data(opts ...filter.FiltersOptFunc) ([]*entity.GlobalData, error) {
 	if i == nil {
 		return nil, errs.Wrap(ecode.ErrNullPointer)
@@ -77,7 +77,7 @@ func (i *Import) Data(opts ...filter.FiltersOptFunc) ([]*entity.GlobalData, erro
 	return records, nil
 }
 
-//Data method returns entity.GlobalData list
+// Data method returns entity.GlobalData list
 func (i *Import) Histogram(period values.Period, step int, opts ...filter.FiltersOptFunc) ([]*histogram.HistData, error) {
 	if i == nil {
 		return nil, errs.Wrap(ecode.ErrNullPointer)
@@ -124,7 +124,7 @@ func (i *Import) next() (*entity.GlobalData, error) {
 	)
 }
 
-/* Copyright 2020-2021 Spiegel
+/* Copyright 2020-2022 Spiegel
  *
  * Licensed under the Apache License, Version 2.0 (the "License");
  * you may not use this file except in compliance with the License.

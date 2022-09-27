@@ -1,5 +1,5 @@
-github.com/goark/csvdata v0.6.0 h1:sdqpMgBpowgERhn7EwxTH8PmT3zEE7Zo80ljJpZlPTY=
-github.com/goark/csvdata v0.6.0/go.mod h1:w00e/qz3baufswyO3t/Le9b6gBf8aRMwVYuSP3G6j0w=
+github.com/goark/csvdata v0.7.0 h1:RjWYCo3XTJmeSu/AoeDRpQcswCZGkc2UpYdQfYB18p0=
+github.com/goark/csvdata v0.7.0/go.mod h1:w00e/qz3baufswyO3t/Le9b6gBf8aRMwVYuSP3G6j0w=
 github.com/goark/errs v1.1.0 h1:FKnyw4LVyRADIjM8Nj0Up6r0/y5cfADvZAd1E+tthXE=
 github.com/goark/errs v1.1.0/go.mod h1:TtaPEoadm2mzqzfXdkkfpN2xuniCFm2q4JH+c1qzaqw=
 github.com/goark/fetch v0.3.0 h1:2m32EGOLBi99RzI5urFfmv5++CMqfenVw7NH8z/lbX8=
