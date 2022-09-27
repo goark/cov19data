@@ -23,18 +23,18 @@ var urls = []string{
 	"https://stopcovid19.metro.tokyo.lg.jp/data/130001_tokyo_covid19_patients_2022-1.csv",
 }
 
-//Import class
+// Import class
 type Import struct {
 	reader io.Reader
 	data   *csvdata.Rows
 }
 
-//New returns new Import instance
+// New returns new Import instance
 func New(r io.Reader) *Import {
-	return &Import{reader: r, data: csvdata.NewRows(csvdata.New(r).WithFieldsPerRecord(17), true)}
+	return &Import{reader: r, data: csvdata.NewRows(csvdata.New(r).WithTrimSpace(true).WithFieldsPerRecord(17), true)}
 }
 
-//NewWeb returns new Import instance
+// NewWeb returns new Import instance
 func NewWeb(ctx context.Context, cli fetch.Client) (*Import, error) {
 	cc := newConcat()
 	for i, u := range urls {
@@ -58,7 +58,7 @@ func importFromWeb(ctx context.Context, cli fetch.Client, ustr string, cc *conca
 	return cc.cat(resp.Body(), withHeader)
 }
 
-//Close method close reader if it has io.Closer interface.
+// Close method close reader if it has io.Closer interface.
 func (i *Import) Close() {
 	if i == nil {
 		return
@@ -66,7 +66,7 @@ func (i *Import) Close() {
 	i.data.Close()
 }
 
-//RawReader method returns raw data stream
+// RawReader method returns raw data stream
 func (i *Import) RawReader() io.Reader {
 	if i == nil {
 		return nil
@@ -74,7 +74,7 @@ func (i *Import) RawReader() io.Reader {
 	return i.reader
 }
 
-//Data method returns entity.GlobalData list
+// Data method returns entity.GlobalData list
 func (i *Import) Data(opts ...filter.FiltersOptFunc) ([]*entity.TokyoData, error) {
 	if i == nil {
 		return nil, errs.Wrap(ecode.ErrNullPointer)
@@ -96,7 +96,7 @@ func (i *Import) Data(opts ...filter.FiltersOptFunc) ([]*entity.TokyoData, error
 	return records, nil
 }
 
-//Data method returns entity.GlobalData list
+// Data method returns entity.GlobalData list
 func (i *Import) Histogram(period values.Period, step int, opts ...filter.FiltersOptFunc) ([]*histogram.HistData, error) {
 	if i == nil {
 		return nil, errs.Wrap(ecode.ErrNullPointer)

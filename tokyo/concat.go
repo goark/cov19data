@@ -19,7 +19,7 @@ func newConcat() *concat {
 }
 
 func (cc *concat) cat(r io.Reader, withHeader bool) error {
-	data := csvdata.NewRows(csvdata.New(r), true)
+	data := csvdata.NewRows(csvdata.New(r).WithTrimSpace(true), true)
 	if withHeader {
 		hdr, err := data.Header()
 		if err != nil {
